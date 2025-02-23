@@ -1,0 +1,2 @@
+C:/Users/yashp/Downloads/Tinder-Clone-App-main/Tinder-Clone-App-main/android/app/.cxx/Debug/2j1a5x38/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/yashp/Downloads/Tinder-Clone-App-main/Tinder-Clone-App-main/android/app/.cxx/Debug/2j1a5x38/x86_64/CMakeFiles/rebuild_cache.dir

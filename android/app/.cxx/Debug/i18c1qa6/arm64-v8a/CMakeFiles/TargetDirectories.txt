@@ -1,0 +1,2 @@
+C:/Users/yashp/Downloads/Meowmatch-App/Tinder-Clone-App-main/android/app/.cxx/Debug/i18c1qa6/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/yashp/Downloads/Meowmatch-App/Tinder-Clone-App-main/android/app/.cxx/Debug/i18c1qa6/arm64-v8a/CMakeFiles/rebuild_cache.dir
