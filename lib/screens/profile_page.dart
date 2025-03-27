@@ -12,14 +12,12 @@ class _ProfilePageState extends State<ProfilePage> {
   String? ownerName, catName, catBreed, catAge, catGender, catHealth, catPersonality, catInterests;
   
   bool _isSaveButtonPressed = false;
-  bool _isMatchButtonPressed = false;
-  bool _isPremiumButtonPressed = false; // ✅ For payment button animation
 
   @override
   Widget build(BuildContext context) {
     return GradientWrapper(
       child: Scaffold(
-        backgroundColor: Colors.transparent, 
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text("Profile Setup", style: TextStyle(fontFamily: "Poppins", color: Colors.white)),
           backgroundColor: Colors.pink,
@@ -33,8 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 // 📌 Owner Details
                 Text("Owner Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 _buildTextField("Owner Name", (value) => ownerName = value),
-                
+
                 SizedBox(height: 20),
+
+                // 📌 Cat Details
                 Text("Cat Details", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
                 _buildTextField("Cat Name", (value) => catName = value),
                 _buildTextField("Breed", (value) => catBreed = value),
@@ -43,79 +43,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 _buildTextField("Health Status", (value) => catHealth = value),
                 _buildTextField("Personality Traits", (value) => catPersonality = value),
                 _buildTextField("Interests", (value) => catInterests),
-                
+
                 SizedBox(height: 30),
 
                 // 📌 Save Profile Button
                 _buildAnimatedButton(
-                  text: "Save Profile", 
-                  color: Colors.pink, 
-                  icon: Icons.save, 
-                  isPressed: _isSaveButtonPressed, 
+                  text: "Save Profile",
+                  color: Colors.pink,
+                  icon: Icons.save,
+                  isPressed: _isSaveButtonPressed,
                   onTap: () {
                     setState(() => _isSaveButtonPressed = false);
                     print("Profile Saved!");
-                  }
-                ),
-
-                SizedBox(height: 20), 
-
-                // 📌 Find Matches Button
-                _buildAnimatedButton(
-                  text: "Find Matches ❤️", 
-                  color: Colors.green, 
-                  icon: Icons.favorite, 
-                  isPressed: _isMatchButtonPressed, 
-                  onTap: () {
-                    setState(() => _isMatchButtonPressed = false);
-                    Navigator.pushNamed(context, '/matchmaking'); 
-                  }
-                ),
-
-                SizedBox(height: 30), 
-
-                // 📌 Attractive Payment Button (Upgrade to Premium)
-                GestureDetector(
-                  onTapDown: (_) => setState(() => _isPremiumButtonPressed = true),
-                  onTapUp: (_) {
-                    setState(() => _isPremiumButtonPressed = false);
-                    Navigator.pushNamed(context, '/payment');
                   },
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 200),
-                    transform: _isPremiumButtonPressed 
-                        ? (Matrix4.identity()..scale(1.05)) 
-                        : Matrix4.identity(),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.orangeAccent, Colors.pinkAccent], // ✅ Gradient Colors
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: _isPremiumButtonPressed
-                          ? [
-                              BoxShadow(
-                                color: Colors.orangeAccent.withOpacity(0.5),
-                                blurRadius: 15,
-                                spreadRadius: 2,
-                              )
-                            ]
-                          : [],
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 18),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.star, color: Colors.white, size: 24), // ⭐ Icon
-                        SizedBox(width: 10),
-                        Text(
-                          "Upgrade to Premium 💎",
-                          style: TextStyle(fontSize: 20, fontFamily: "Montserrat", fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),
@@ -142,7 +82,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // ✅ Reusable Animated Button Function
-  Widget _buildAnimatedButton({required String text, required Color color, required IconData icon, required bool isPressed, required VoidCallback onTap}) {
+  Widget _buildAnimatedButton({
+    required String text,
+    required Color color,
+    required IconData icon,
+    required bool isPressed,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTapDown: (_) => setState(() => isPressed = true),
       onTapUp: (_) {
@@ -178,4 +124,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
