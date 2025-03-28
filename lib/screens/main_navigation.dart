@@ -4,7 +4,9 @@ import 'matchmaking_page.dart';
 import 'profile_page.dart';
 import 'message_page.dart';
 import 'payment_screen.dart';
-import 'HealthPage.dart'; // ✅ Added Health Page
+import 'HealthPage.dart'; // ✅ Health Page
+import 'SettingsPage.dart'; // ✅ Settings Page
+import 'ContactSupportPage.dart'; // ✅ Contact Support Page
 import 'package:meowmatch/widgets/gradient_wrapper.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -23,27 +25,71 @@ class _MainNavigationState extends State<MainNavigation> {
     MessagePage(catName: "Unknown Cat"), // 💬 Chats
     ProfilePage(),      // 👤 Profile
     PaymentScreen(),    // 💎 Premium
-    HealthPage(),       // 🏥 Health (NEW)
+    HealthPage(),       // 🏥 Health
   ];
 
   void _onItemTapped(int index) {
-    // Prevent navigation from "Explore" (index 1) back to "Home" (index 0)
-    if (_selectedIndex == 1 && index == 0) {
-      return;
-    }
-
-    // Update only if a new page is selected
-    if (index != _selectedIndex) {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("MeowMatch"),
+        backgroundColor: Colors.pink,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: Colors.white), // ☰ Drawer Menu Icon
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+      ),
+
+      // ✅ DRAWER MENU (Proper Navigation)
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.pink),
+              child: Center(
+                child: Text(
+                  "MeowMatch Menu",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contact_support),
+              title: Text("Contact Support"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ContactSupportPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+
       body: GradientWrapper(child: _pages[_selectedIndex]),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -56,11 +102,10 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
-          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"), // ✅ Added Health Button
+          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"),
         ],
       ),
     );
   }
 }
-
 

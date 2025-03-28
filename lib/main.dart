@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/ExplorePage.dart';  // ✅ Correct Page Name
-import 'screens/HealthPage.dart';  // ✅ New Health Page
+import 'screens/ExplorePage.dart';
+import 'screens/HealthPage.dart';
 import 'screens/home_page.dart';
 import 'screens/matchmaking_page.dart';
 import 'screens/sign_in_page.dart';
@@ -8,6 +8,8 @@ import 'screens/sign_up_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/payment_screen.dart';
 import 'screens/message_page.dart';
+import 'screens/SettingsPage.dart';  // ✅ Added Settings Page
+import 'screens/ContactSupportPage.dart';  // ✅ Added Contact Support Page
 import 'widgets/gradient_wrapper.dart';
 
 void main() {
@@ -38,19 +40,21 @@ class MeowMatchApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => GradientWrapper(child: SignInPage()), // ✅ Start with Sign In
+        '/': (context) => GradientWrapper(child: SignInPage()), 
         '/signUp': (context) => GradientWrapper(child: SignUpPage()),
-        '/home': (context) => GradientWrapper(child: MainNavigation()), // ✅ Main Navigation
+        '/home': (context) => GradientWrapper(child: MainNavigation()), 
         '/profile': (context) => GradientWrapper(child: ProfilePage()),
         '/matchmaking': (context) => GradientWrapper(child: MatchmakingPage()),
         '/payment': (context) => GradientWrapper(child: PaymentScreen()),
-        '/health': (context) => GradientWrapper(child: HealthPage()), // ✅ New Health Page Route
+        '/health': (context) => GradientWrapper(child: HealthPage()),
+        '/settings': (context) => GradientWrapper(child: SettingsPage()), // ✅ New Settings Route
+        '/contactSupport': (context) => GradientWrapper(child: ContactSupportPage()), // ✅ New Contact Support Route
       },
     );
   }
 }
 
-// ✅ UPDATED BOTTOM NAVIGATION BAR SYSTEM WITH "HEALTH"
+// ✅ UPDATED NAVIGATION WITH DRAWER MENU
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
@@ -85,7 +89,51 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("MeowMatch"),
+        backgroundColor: Colors.pink,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: Colors.white), 
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ),
+      ),
+
+      // ✅ DRAWER MENU
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.pink),
+              child: Text(
+                "MeowMatch Menu",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Settings"),
+              onTap: () {
+                Navigator.pushNamed(context, '/settings'); // ✅ Navigate to Settings
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contact_support),
+              title: Text("Contact Support"),
+              onTap: () {
+                Navigator.pushNamed(context, '/contactSupport'); // ✅ Navigate to Contact Support
+              },
+            ),
+          ],
+        ),
+      ),
+
       body: GradientWrapper(child: _pages[_selectedIndex]),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -98,7 +146,7 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
-          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"), // ✅ New Health Tab
+          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"),
         ],
       ),
     );
