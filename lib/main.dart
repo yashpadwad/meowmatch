@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/ExplorePage.dart';  // ✅ NEW Explore Page
+import 'screens/ExplorePage.dart';  // ✅ Correct Page Name
+import 'screens/HealthPage.dart';  // ✅ New Health Page
 import 'screens/home_page.dart';
 import 'screens/matchmaking_page.dart';
 import 'screens/sign_in_page.dart';
@@ -39,16 +40,17 @@ class MeowMatchApp extends StatelessWidget {
       routes: {
         '/': (context) => GradientWrapper(child: SignInPage()), // ✅ Start with Sign In
         '/signUp': (context) => GradientWrapper(child: SignUpPage()),
-        '/home': (context) => GradientWrapper(child: MainNavigation()), // ✅ New Bottom Navigation System
+        '/home': (context) => GradientWrapper(child: MainNavigation()), // ✅ Main Navigation
         '/profile': (context) => GradientWrapper(child: ProfilePage()),
         '/matchmaking': (context) => GradientWrapper(child: MatchmakingPage()),
         '/payment': (context) => GradientWrapper(child: PaymentScreen()),
+        '/health': (context) => GradientWrapper(child: HealthPage()), // ✅ New Health Page Route
       },
     );
   }
 }
 
-// ✅ NEW BOTTOM NAVIGATION BAR SYSTEM
+// ✅ UPDATED BOTTOM NAVIGATION BAR SYSTEM WITH "HEALTH"
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
@@ -61,16 +63,16 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _pages = [
     MatchmakingPage(),  // 🔥 Home (Swiping)
-    ExplorePage(),      // 🔍 Explore (FIXED: Not HomePage)
+    ExplorePage(),      // 🔍 Explore
     MessagePage(catName: "Unknown Cat"), // 💬 Chats
     ProfilePage(),      // 👤 Profile
     PaymentScreen(),    // 💎 Premium
+    HealthPage(),       // 🏥 Health & Breed Info
   ];
 
   void _onItemTapped(int index) {
-    // Prevent navigation from "Explore" (index 1) back to "Home" (index 0)
     if (_selectedIndex == 1 && index == 0) {
-      return;
+      return; // Prevents unwanted navigation back to home from explore
     }
 
     if (index != _selectedIndex) {
@@ -83,7 +85,7 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GradientWrapper(child: _pages[_selectedIndex]), // ✅ Wrap with GradientWrapper
+      body: GradientWrapper(child: _pages[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -92,12 +94,15 @@ class _MainNavigationState extends State<MainNavigation> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.local_fire_department), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"), // ✅ Fixed icon
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
+          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"), // ✅ New Health Tab
         ],
       ),
     );
   }
 }
+
+

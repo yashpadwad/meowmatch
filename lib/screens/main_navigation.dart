@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'ExplorePage.dart'; // ✅ NEW Explore Page
+import 'ExplorePage.dart'; 
 import 'matchmaking_page.dart';
 import 'profile_page.dart';
 import 'message_page.dart';
 import 'payment_screen.dart';
+import 'HealthPage.dart'; // ✅ Added Health Page
 import 'package:meowmatch/widgets/gradient_wrapper.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -17,11 +18,12 @@ class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0; // Default: Home page
 
   final List<Widget> _pages = [
-    MatchmakingPage(),  // 🔥 Home (Swiping)
-    ExplorePage(),      // 🔍 Explore (Fixed, Not HomePage)
+    MatchmakingPage(),  // 🔥 Home
+    ExplorePage(),      // 🔍 Explore
     MessagePage(catName: "Unknown Cat"), // 💬 Chats
     ProfilePage(),      // 👤 Profile
     PaymentScreen(),    // 💎 Premium
+    HealthPage(),       // 🏥 Health (NEW)
   ];
 
   void _onItemTapped(int index) {
@@ -50,10 +52,11 @@ class _MainNavigationState extends State<MainNavigation> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.local_fire_department), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"), // ✅ Fixed icon
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"), 
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
+          BottomNavigationBarItem(icon: Icon(Icons.health_and_safety), label: "Health"), // ✅ Added Health Button
         ],
       ),
     );
