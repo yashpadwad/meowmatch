@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'ExplorePage.dart'; // ✅ NEW Explore Page
 import 'matchmaking_page.dart';
 import 'profile_page.dart';
 import 'message_page.dart';
 import 'payment_screen.dart';
-import '../widgets/gradient_wrapper.dart';
+import 'package:meowmatch/widgets/gradient_wrapper.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -14,20 +14,28 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Default: Home page
 
   final List<Widget> _pages = [
-    MatchmakingPage(), // 🔥 Home (Main Swiping)
-    HomePage(), // 🔍 Search
-    MessagePage(catName: "Chat"), // 💬 Matches & Chats (FIX: Added default catName)
-    ProfilePage(), // 👤 Profile
-    PaymentScreen(), // 💎 Premium
+    MatchmakingPage(),  // 🔥 Home (Swiping)
+    ExplorePage(),      // 🔍 Explore (Fixed, Not HomePage)
+    MessagePage(catName: "Unknown Cat"), // 💬 Chats
+    ProfilePage(),      // 👤 Profile
+    PaymentScreen(),    // 💎 Premium
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    // Prevent navigation from "Explore" (index 1) back to "Home" (index 0)
+    if (_selectedIndex == 1 && index == 0) {
+      return;
+    }
+
+    // Update only if a new page is selected
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -42,7 +50,7 @@ class _MainNavigationState extends State<MainNavigation> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.local_fire_department), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"), // ✅ Fixed icon
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
@@ -51,4 +59,5 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
+
 

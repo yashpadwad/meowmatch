@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/ExplorePage.dart';  // ✅ NEW Explore Page
 import 'screens/home_page.dart';
 import 'screens/matchmaking_page.dart';
 import 'screens/sign_in_page.dart';
@@ -38,7 +39,7 @@ class MeowMatchApp extends StatelessWidget {
       routes: {
         '/': (context) => GradientWrapper(child: SignInPage()), // ✅ Start with Sign In
         '/signUp': (context) => GradientWrapper(child: SignUpPage()),
-        '/home': (context) => GradientWrapper(child: MainNavigation()), // ✅ New Main Navigation
+        '/home': (context) => GradientWrapper(child: MainNavigation()), // ✅ New Bottom Navigation System
         '/profile': (context) => GradientWrapper(child: ProfilePage()),
         '/matchmaking': (context) => GradientWrapper(child: MatchmakingPage()),
         '/payment': (context) => GradientWrapper(child: PaymentScreen()),
@@ -59,17 +60,24 @@ class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    MatchmakingPage(),  // 🔥 Home (Main Swiping)
-    HomePage(),         // 🔍 Search
-    MessagePage(catName: "Unknown Cat"), // ✅ FIXED: Provide a default cat name
+    MatchmakingPage(),  // 🔥 Home (Swiping)
+    ExplorePage(),      // 🔍 Explore (FIXED: Not HomePage)
+    MessagePage(catName: "Unknown Cat"), // 💬 Chats
     ProfilePage(),      // 👤 Profile
     PaymentScreen(),    // 💎 Premium
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    // Prevent navigation from "Explore" (index 1) back to "Home" (index 0)
+    if (_selectedIndex == 1 && index == 0) {
+      return;
+    }
+
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -84,7 +92,7 @@ class _MainNavigationState extends State<MainNavigation> {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.local_fire_department), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"), // ✅ Fixed icon
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           BottomNavigationBarItem(icon: Icon(Icons.diamond), label: "Premium"),
@@ -93,9 +101,3 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
-
-
-
-
-
-
