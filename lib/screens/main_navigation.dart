@@ -50,41 +50,41 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
       ),
 
-      // ✅ DRAWER MENU (Proper Navigation)
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.pink),
-              child: Center(
-                child: Text(
-                  "MeowMatch Menu",
-                  style: TextStyle(color: Colors.white, fontSize: 22),
+      // ✅ DRAWER MENU (Safe & Styled)
+      drawer: SafeArea(
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.pink),
+                child: Center(
+                  child: Text(
+                    "MeowMatch Menu",
+                    style: TextStyle(
+                      color: Colors.amberAccent, // 🌟 Golden Header
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.contact_support),
-              title: Text("Contact Support"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ContactSupportPage()),
-                );
-              },
-            ),
-          ],
+              ListTile(
+                leading: Icon(Icons.settings, color: Colors.black),
+                title: Text("Settings"),
+                onTap: () {
+                  Navigator.pushNamed(context, '/settings'); // ✅ Named Route
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.contact_support, color: Colors.black),
+                title: Text("Contact Support"),
+                onTap: () {
+                  Navigator.pushNamed(context, '/contactSupport'); // ✅ Named Route
+                },
+              ),
+            ],
+          ),
         ),
       ),
 
@@ -108,4 +108,5 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
+
 
