@@ -5,8 +5,8 @@ import 'profile_page.dart';
 import 'message_page.dart';
 import 'payment_screen.dart';
 import 'HealthPage.dart'; // ✅ Health Page
-import 'SettingsPage.dart'; // ✅ Settings Page
-import 'ContactSupportPage.dart'; // ✅ Contact Support Page
+// ✅ Settings Page
+// ✅ Contact Support Page
 import 'package:meowmatch/widgets/gradient_wrapper.dart';
 
 class MainNavigation extends StatefulWidget {
