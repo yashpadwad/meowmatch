@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296791886426",
+    "project_id": "meowmatch-8a42a",
+    "storage_bucket": "meowmatch-8a42a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296791886426:android:dbaebd7b003a13b5b56663",
+        "android_client_info": {
+          "package_name": "com.example.meowmatch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWbiLVv6XvbsmBHtAA0o53ShtQNXtkZDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

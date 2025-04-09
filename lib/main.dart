@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// Screens
 import 'screens/ExplorePage.dart';
 import 'screens/HealthPage.dart';
-import 'screens/home_page.dart';
 import 'screens/matchmaking_page.dart';
 import 'screens/sign_in_page.dart';
 import 'screens/sign_up_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/payment_screen.dart';
-import 'screens/message_page.dart';
-import 'screens/SettingsPage.dart';  // ✅ Added Settings Page
-import 'screens/ContactSupportPage.dart';  // ✅ Added Contact Support Page
+import 'screens/chat_screen.dart';
+import 'screens/SettingsPage.dart';
+import 'screens/ContactSupportPage.dart';
+
 import 'widgets/gradient_wrapper.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MeowMatchApp());
 }
 
@@ -34,55 +40,72 @@ class MeowMatchApp extends StatelessWidget {
             backgroundColor: Colors.pink,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 5,
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
           ),
         ),
       ),
-      initialRoute: '/',
+      home: const AuthGate(),
       routes: {
-        '/': (context) => GradientWrapper(child: SignInPage()), 
         '/signUp': (context) => GradientWrapper(child: SignUpPage()),
-        '/home': (context) => GradientWrapper(child: MainNavigation()), 
+        '/home': (context) => GradientWrapper(child: MainNavigation()),
         '/profile': (context) => GradientWrapper(child: ProfilePage()),
         '/matchmaking': (context) => GradientWrapper(child: MatchmakingPage()),
         '/payment': (context) => GradientWrapper(child: PaymentScreen()),
         '/health': (context) => GradientWrapper(child: HealthPage()),
-        '/settings': (context) => GradientWrapper(child: SettingsPage()), // ✅ New Settings Route
-        '/contactSupport': (context) => GradientWrapper(child: ContactSupportPage()), // ✅ New Contact Support Route
+        '/settings': (context) => GradientWrapper(child: SettingsPage()),
+        '/contactSupport': (context) => GradientWrapper(child: ContactSupportPage()),
       },
     );
   }
 }
 
-// ✅ UPDATED NAVIGATION WITH DRAWER MENU
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Colors.black,
+            body: Center(child: CircularProgressIndicator(color: Colors.pink)),
+          );
+        }
+
+        if (snapshot.hasData) {
+          return const MainNavigation();
+        }
+
+        return const SignInPage();
+      },
+    );
+  }
+}
+
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
   @override
-  _MainNavigationState createState() => _MainNavigationState();
+  State<MainNavigation> createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    MatchmakingPage(),  // 🔥 Home (Swiping)
-    ExplorePage(),      // 🔍 Explore
-    MessagePage(catName: "Unknown Cat"), // 💬 Chats
-    ProfilePage(),      // 👤 Profile
-    PaymentScreen(),    // 💎 Premium
-    HealthPage(),       // 🏥 Health & Breed Info
+    const MatchmakingPage(),
+    const ExplorePage(),
+    const ChatScreen(),
+    const ProfilePage(),
+    const PaymentScreen(),
+    const HealthPage(),
   ];
 
   void _onItemTapped(int index) {
-    if (_selectedIndex == 1 && index == 0) {
-      return; // Prevents unwanted navigation back to home from explore
-    }
-
-    if (index != _selectedIndex) {
-      setState(() {
-        _selectedIndex = index;
-      });
+    if (_selectedIndex != index) {
+      setState(() => _selectedIndex = index);
     }
   }
 
@@ -90,57 +113,49 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("MeowMatch"),
+        title: const Text("MeowMatch", style: TextStyle(fontFamily: "Poppins")),
         backgroundColor: Colors.pink,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu, color: Colors.white), 
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+            icon: const Icon(Icons.menu, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
       ),
-
-      // ✅ DRAWER MENU
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(color: Colors.pink),
-              child: Text(
-                "MeowMatch Menu",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              child: Center(
+                child: Text(
+                  "MeowMatch Menu",
+                  style: TextStyle(color: Colors.amberAccent, fontSize: 22, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text("Settings"),
-              onTap: () {
-                Navigator.pushNamed(context, '/settings'); // ✅ Navigate to Settings
-              },
+              leading: const Icon(Icons.settings),
+              title: const Text("Settings"),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
             ),
             ListTile(
-              leading: Icon(Icons.contact_support),
-              title: Text("Contact Support"),
-              onTap: () {
-                Navigator.pushNamed(context, '/contactSupport'); // ✅ Navigate to Contact Support
-              },
+              leading: const Icon(Icons.contact_support),
+              title: const Text("Contact Support"),
+              onTap: () => Navigator.pushNamed(context, '/contactSupport'),
             ),
           ],
         ),
       ),
-
       body: GradientWrapper(child: _pages[_selectedIndex]),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.pinkAccent,
         unselectedItemColor: Colors.grey,
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.local_fire_department), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
           BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chats"),

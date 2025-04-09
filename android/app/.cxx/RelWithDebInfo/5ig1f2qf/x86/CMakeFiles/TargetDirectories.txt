@@ -1,0 +1,2 @@
+C:/Users/yashp/Downloads/Meowmatch-App/meowmatch/android/app/.cxx/RelWithDebInfo/5ig1f2qf/x86/CMakeFiles/edit_cache.dir
+C:/Users/yashp/Downloads/Meowmatch-App/meowmatch/android/app/.cxx/RelWithDebInfo/5ig1f2qf/x86/CMakeFiles/rebuild_cache.dir
